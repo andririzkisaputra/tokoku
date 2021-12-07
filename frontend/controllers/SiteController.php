@@ -75,7 +75,37 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->render('home/index');
+    }
+
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
+    public function actionNotifikasi()
+    {
+        return $this->render('notifikasi/index');
+    }
+
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
+    public function actionKeranjang()
+    {
+        return $this->render('keranjang/index');
+    }
+
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
+    public function actionPesanan()
+    {
+        return $this->render('pesanan/index');
     }
 
     /**
