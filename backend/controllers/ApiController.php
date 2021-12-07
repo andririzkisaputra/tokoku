@@ -56,7 +56,7 @@ class ApiController extends Controller
      */
     public function actionGetProduk()
     {
-      // \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $draw       		 = $_POST['draw'];
 			$start      		 = $_POST['start'];
 			$rowperpage 		 = $_POST['length'];
@@ -75,10 +75,6 @@ class ApiController extends Controller
 			foreach ($query as $key => $value) {
 				$query[$key]['no']	 = $key+1;
 				$query[$key]['aksi'] = '<div class="btn-group btn-group-toggle">'
-                              //   .'<a href="'.Url::base(true).'/'.$value['produk_id'].'" type="button" class="btn btn-sm btn-info detail" data="'.$value['produk_id'].'">Detail</a>'
-                              //   .'<button href="" type="button" class="btn btn-sm btn-success edit" data="'.$value['produk_id'].'">Ubah</button>'
-                              //   .'<button href="javascript:void(0)" type="button" class="btn btn-sm btn-danger hapus" data="'.$value['produk_id'].'">Hapus</button>'
-                              // .'</div>';
                                  .Html::button('Detail', ['value' => Url::to(['../site/detail-produk?id='.$value['produk_id']]), 'class' => 'btn btn-sm btn-info showModalButton'])
                                  .Html::button('Ubah', ['value' => Url::to(['../site/ubah-data-produk?id='.$value['produk_id']]), 'class' => 'btn btn-sm btn-success showModalButton'])
                                  .Html::button('Hapus', ['value' => Url::to(['javascript:void(0)']), 'class' => 'btn btn-sm btn-danger hapus', 'data' => $value['produk_id']])
@@ -86,11 +82,10 @@ class ApiController extends Controller
 			}
 
       $result['draw'] 					 = $draw;
-			$result['recordsTotal']    = count($query);
 			$result['recordsFiltered'] = count($modelApi->get_join_tabel($where, $where_like, false, false, 'produk.updated_at', 'produk', 'kategori', 'kategori.kategori_id = produk.kategori_id'));
+      $result['recordsTotal']    = count($query);
 			$result['data'] 					 = $query;
-      print_r(json_encode($result));
-      exit;
+      return $result;
     }
 
     /**
@@ -100,6 +95,8 @@ class ApiController extends Controller
      */
     public function actionGetKategori()
     {
+
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $draw       		 = $_POST['draw'];
 			$start      		 = $_POST['start'];
 			$rowperpage 		 = $_POST['length'];
@@ -123,10 +120,10 @@ class ApiController extends Controller
       												 .'</div>';
 			}
       $result['draw'] 					 = $draw;
-			$result['recordsTotal']    = count($modelApi->get_tabel(false, false, false, false, 'updated_at', 'kategori'));
 			$result['recordsFiltered'] = count($modelApi->get_tabel($where, $where_like, false, false, 'updated_at', 'kategori'));
+      $result['recordsTotal']    = count($query);
 			$result['data'] 					 = $query;
-			print_r(json_encode($result));
+			return $result;
     }
 
     /**
@@ -136,6 +133,7 @@ class ApiController extends Controller
      */
     public function actionPostProduk()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi      = new Api();
       $modelProduk   = new ProdukForm();
       $modelKategori = new KategoriForm();
@@ -145,7 +143,7 @@ class ApiController extends Controller
         $kategori = Yii::$app->request->post('KategoriForm');
         $simpan = $modelApi->simpan_produk($modelProduk, $produk, $kategori);
       }
-			print_r(json_encode($simpan));
+			return $simpan;
     }
 
     /**
@@ -155,6 +153,7 @@ class ApiController extends Controller
      */
     public function actionPostKategori()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi      = new Api();
       $modelKategori = new KategoriForm();
       if(Yii::$app->request->isAjax && $modelKategori->load(Yii::$app->request->post()))
@@ -162,7 +161,7 @@ class ApiController extends Controller
         $kategori = Yii::$app->request->post('KategoriForm');
         $simpan = $modelApi->simpan_kategori($modelKategori, $kategori);
       }
-			print_r(json_encode($simpan));
+			return $simpan;
     }
 
     /**
@@ -172,6 +171,7 @@ class ApiController extends Controller
      */
     public function actionUbahProduk()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi      = new Api();
       $modelProduk   = new ProdukForm();
       $modelKategori = new KategoriForm();
@@ -181,7 +181,7 @@ class ApiController extends Controller
         $kategori = Yii::$app->request->post('KategoriForm');
         $simpan = $modelApi->ubah_produk($modelProduk, $produk, $kategori);
       }
-			print_r(json_encode($simpan));
+			return $simpan;
     }
 
     /**
@@ -191,6 +191,7 @@ class ApiController extends Controller
      */
     public function actionUbahKategori()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi      = new Api();
       $modelKategori = new KategoriForm();
       if(Yii::$app->request->isAjax && $modelKategori->load(Yii::$app->request->post()))
@@ -198,7 +199,7 @@ class ApiController extends Controller
         $kategori = Yii::$app->request->post('KategoriForm');
         $simpan = $modelApi->ubah_kategori($kategori);
       }
-			print_r(json_encode($simpan));
+			return $simpan;
     }
 
     /**
@@ -208,11 +209,12 @@ class ApiController extends Controller
      */
     public function actionDeleteProduk()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi  = new Api();
       $produk_id = Yii::$app->request->post('produk_id');
       $hapus     = $modelApi->delete_produk($produk_id);
 
-			print_r(json_encode($hapus));
+			return $hapus;
     }
 
     /**
@@ -222,11 +224,12 @@ class ApiController extends Controller
      */
     public function actionDeleteKategori()
     {
+      \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
       $modelApi    = new Api();
       $kategori_id = Yii::$app->request->post('kategori_id');
       $hapus       = $modelApi->delete_kategori($kategori_id);
 
-			print_r(json_encode($hapus));
+			return $hapus;
     }
 
 }

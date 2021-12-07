@@ -64,7 +64,7 @@ $this->registerJs("
     <?= Html::button('Tambah Data', ['value' => Url::to(['tambah-data-produk']), 'class' => 'btn btn-sm btn-info showModalButton']); ?>
   </div>
   <div class="">
-    <table id="tabel_produk" class="table table-bordered table-striped">
+    <table id="tabel_produk" class="table table-bordered table-striped" cellspacing="0">
         <thead>
             <tr>
                 <th>No</th>
