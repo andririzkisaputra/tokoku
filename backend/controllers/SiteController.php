@@ -93,7 +93,7 @@ class SiteController extends Controller
        $modelApi      = new Api();
        $modelProduk   = new ProdukForm();
        $modelKategori = new KategoriForm();
-       $dataKategori  = $modelApi->get_tabel_by('kategori');
+       $dataKategori  = $modelApi->get_tabel_all('kategori');
        foreach ($dataKategori as $key => $value) {
          $kategori[$value['kategori_id']] = $value['nama_kategori'];
        }
@@ -101,6 +101,52 @@ class SiteController extends Controller
            'modelProduk'   => $modelProduk,
            'modelKategori' => $modelKategori,
            'kategori'      => $kategori,
+       ]);
+     }
+
+    /**
+     * Displays produk.
+     *
+     * @return string
+     */
+     public function actionDetailProduk($id) {
+       $kategori      = [];
+       $modelApi      = new Api();
+       $modelProduk   = new ProdukForm();
+       $dataProduk    = $modelApi->get_tabel_by('produk', ['=', 'produk_id', $id]);
+       $modelKategori = new KategoriForm();
+       $dataKategori  = $modelApi->get_tabel_all('kategori');
+       foreach ($dataKategori as $key => $value) {
+         $kategori[$value['kategori_id']] = $value['nama_kategori'];
+       }
+       return $this->renderAjax('produk/detailProduk', [
+           'modelProduk'   => $modelProduk,
+           'modelKategori' => $modelKategori,
+           'kategori'      => $kategori,
+           'produk'        => $dataProduk,
+       ]);
+     }
+
+    /**
+     * Displays produk.
+     *
+     * @return string
+     */
+     public function actionUbahDataProduk($id) {
+       $kategori      = [];
+       $modelApi      = new Api();
+       $modelProduk   = new ProdukForm();
+       $dataProduk    = $modelApi->get_tabel_by('produk', ['=', 'produk_id', $id]);
+       $modelKategori = new KategoriForm();
+       $dataKategori  = $modelApi->get_tabel_all('kategori');
+       foreach ($dataKategori as $key => $value) {
+         $kategori[$value['kategori_id']] = $value['nama_kategori'];
+       }
+       return $this->renderAjax('produk/ubahDataProduk', [
+           'modelProduk'   => $modelProduk,
+           'modelKategori' => $modelKategori,
+           'kategori'      => $kategori,
+           'produk'        => $dataProduk,
        ]);
      }
 

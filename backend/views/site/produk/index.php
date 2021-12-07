@@ -23,12 +23,36 @@ $this->registerJs("
       },
       columns: [
         { data: 'no'},
-        { data: 'gambar'},
         { data: 'nama_produk', 'className' : 'text-left' },
         { data: 'qty', 'className' : 'text-left' },
         { data: 'aksi', 'className' : 'text-left' },
       ],
     });
+
+  });
+
+  $(document).on('click', '.hapus', function() {
+    var produk_id = $(this).attr('data');
+    if (produk_id) {
+      $.ajax({
+          type     : 'POST',
+          url      : '".Url::base(true)."/api/delete-produk',
+          dataType : 'JSON',
+          data     : {
+            produk_id : produk_id
+          },
+          success: function(data){
+            $('#tabel_produk').DataTable().ajax.reload();
+            return true;
+          },
+          error: function(){
+            alert('ERROR at PHP side!!');
+            return false;
+          }
+      });
+    } else {
+      return false;
+    }
   });
 ");
 ?>
@@ -44,7 +68,6 @@ $this->registerJs("
         <thead>
             <tr>
                 <th>No</th>
-                <th>Gambar</th>
                 <th>Nama Produk</th>
                 <th>Qty</th>
                 <th>Aksi</th>
@@ -53,7 +76,6 @@ $this->registerJs("
         <tfoot>
             <tr>
                 <th>No</th>
-                <th>Gambar</th>
                 <th>Nama Produk</th>
                 <th>Qty</th>
                 <th>Aksi</th>

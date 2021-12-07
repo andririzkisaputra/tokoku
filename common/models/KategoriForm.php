@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * Login form
@@ -11,12 +12,23 @@ use yii\db\ActiveRecord;
 class KategoriForm extends ActiveRecord
 {
     const SCENARIO_CREATE = 'create';
+
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return '{{%kategori}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function behaviors()
+    {
+      return [
+          TimestampBehavior::className(),
+      ];
     }
 
     /**
