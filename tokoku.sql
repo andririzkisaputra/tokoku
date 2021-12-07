@@ -23,16 +23,22 @@ DROP TABLE IF EXISTS `kategori`;
 CREATE TABLE `kategori` (
   `kategori_id` int(11) NOT NULL AUTO_INCREMENT,
   `nama_kategori` varchar(255) DEFAULT NULL,
+  `is_delete` enum('0','1') DEFAULT '1' COMMENT '0. Delete, 1.Aktif',
   `created_by` varchar(11) DEFAULT NULL,
   `created_at` int(11) DEFAULT NULL,
-  `update_at` int(11) DEFAULT NULL,
+  `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`kategori_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `kategori` */
 
-insert  into `kategori`(`kategori_id`,`nama_kategori`,`created_by`,`created_at`,`update_at`) values 
-(1,'Baju','1',1638761351,1638761351);
+insert  into `kategori`(`kategori_id`,`nama_kategori`,`is_delete`,`created_by`,`created_at`,`updated_at`) values 
+(1,'Baju','0','1',1638761351,1638864240),
+(2,'Celana Js','0','1',1638761351,1638864207),
+(3,'Kaos','0','1',1638863147,1638864240),
+(4,'Makanan','1','1',1638864644,1638864644),
+(5,'Barang','1','1',1638864868,1638864868),
+(6,'Alat Tulis','1','1',1638864945,1638864945);
 
 /*Table structure for table `migration` */
 
@@ -61,16 +67,29 @@ CREATE TABLE `produk` (
   `nama_produk` varchar(255) DEFAULT NULL,
   `qty` varchar(11) DEFAULT NULL,
   `gambar` varchar(255) DEFAULT NULL,
+  `is_delete` enum('0','1') DEFAULT '1' COMMENT '0. Delete, 1.Aktif',
   `created_by` varchar(11) DEFAULT NULL,
   `created_at` int(11) DEFAULT NULL,
   `updated_at` int(11) DEFAULT NULL,
   PRIMARY KEY (`produk_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 /*Data for the table `produk` */
 
-insert  into `produk`(`produk_id`,`kategori_id`,`nama_produk`,`qty`,`gambar`,`created_by`,`created_at`,`updated_at`) values 
-(1,'1','Baju Batik','50','1','1',1638761351,1638761351);
+insert  into `produk`(`produk_id`,`kategori_id`,`nama_produk`,`qty`,`gambar`,`is_delete`,`created_by`,`created_at`,`updated_at`) values 
+(1,'2','Baju Batik','50','1','0','1',1638761351,1638849567),
+(5,'2','Baju Batik','50','snack-2021-12-07-03:58:16.png','0','1',1638847018,1638864237),
+(6,'4','Bakso Granat','100','bakso-2021-12-07-08:27:18.jpeg','1','1',1638864746,1638865422),
+(7,'6','Pencil Warna','100','pewarna-2021-12-07-08:23:17.jpeg','1','1',1638865043,1638865450),
+(8,'4','Nasi Goreng','100','nasi-goreng-2021-12-07-08:01:25.jpeg','1','1',1638865501,1638865501),
+(9,'4','Nasi Goreng Gila','100','nasi-goreng-gila-2021-12-07-08:31:25.jpeg','1','1',1638865531,1638865531),
+(10,'4','Bakso Beranak','100','bakso-beranak-2021-12-07-08:44:25.jpeg','1','1',1638865544,1638865544),
+(11,'4','Bakso Merapi','100','bakso-merapi-2021-12-07-08:04:26.jpeg','1','1',1638865564,1638866387),
+(12,'4','Bakso Jumbo','100','bakso-jumbo-2021-12-07-08:48:43.jpeg','1','1',1638866628,1638866628),
+(13,'4','Bakso','100','bakso-2021-12-07-08:07:57.jpeg','1','1',1638867427,1638867427),
+(14,'4','Nasi Goreng Spesial','100','nasi-goreng-spesial-2021-12-07-08:48:57.jpeg','1','1',1638867468,1638867468),
+(15,'4','Nasi Goreng Bakso','100','nasi-goreng-bakso-2021-12-07-08:54:58.jpeg','1','1',1638867534,1638867534),
+(16,'4','Nasi Goreng Sosis','100','nasi-goreng-sosis-2021-12-07-08:09:59.jpeg','1','1',1638867549,1638867549);
 
 /*Table structure for table `user` */
 
