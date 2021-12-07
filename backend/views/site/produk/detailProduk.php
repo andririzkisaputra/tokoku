@@ -9,7 +9,31 @@ use common\models\User;
 
 <div class="site-index">
   <div class="">
-    <h4>Nama Produk</h4>
-    <h4><?= $produk['nama_produk'] ?></h4>
+
+    <?php echo Html::img('@web/uploads/'.$produk['gambar'], ['class' => 'detail-img']);?>
+    <table class="detail-tabel">
+      <tbody>
+        <tr>
+          <td>Nama Kategori</td>
+          <td>:</td>
+          <td><?= $kategori['nama_kategori'] ?></td>
+        </tr>
+        <tr>
+          <td>Nama Produk</td>
+          <td>:</td>
+          <td><?= $produk['nama_produk'] ?></td>
+        </tr>
+        <tr>
+          <td>Status Produk</td>
+          <td>:</td>
+          <td><?= $produk['is_active'] ?></td>
+        </tr>
+        <tr>
+          <td>Produk Posting</td>
+          <td>:</td>
+          <td><?= $produk['posting'] ?></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>

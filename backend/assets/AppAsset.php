@@ -17,6 +17,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'js/modal.js',
+        'js/jquery.dataTables.js',
         'js/jquery.dataTables.min.js'
     ];
     public $depends = [

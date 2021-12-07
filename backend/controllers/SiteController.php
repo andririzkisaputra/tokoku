@@ -93,15 +93,35 @@ class SiteController extends Controller
        $modelApi      = new Api();
        $modelProduk   = new ProdukForm();
        $modelKategori = new KategoriForm();
-       $dataKategori  = $modelApi->get_tabel_all('kategori');
-       foreach ($dataKategori as $key => $value) {
-         $kategori[$value['kategori_id']] = $value['nama_kategori'];
+       if ($modelProduk->load(Yii::$app->request->post()) && $modelKategori->load(Yii::$app->request->post())) {
+         $this->redirect('@web/site/produk');
+       } else {
+         $dataKategori  = $modelApi->get_tabel_all('kategori', ['=', 'is_delete' , '1']);
+         foreach ($dataKategori as $key => $value) {
+           $kategori[$value['kategori_id']] = $value['nama_kategori'];
+         }
+         return $this->renderAjax('produk/tambahDataProduk', [
+             'modelProduk'   => $modelProduk,
+             'modelKategori' => $modelKategori,
+             'kategori'      => $kategori,
+         ]);
        }
-       return $this->renderAjax('produk/tambahDataProduk', [
-           'modelProduk'   => $modelProduk,
-           'modelKategori' => $modelKategori,
-           'kategori'      => $kategori,
-       ]);
+     }
+
+    /**
+     * Displays produk.
+     *
+     * @return string
+     */
+     public function actionTambahDataKategori() {
+       $model = new KategoriForm();
+       if ($model->load(Yii::$app->request->post())) {
+         $this->redirect('@web/site/kategori');
+       } else {
+         return $this->renderAjax('kategori/tambahDataKategori', [
+             'model' => $model,
+         ]);
+       }
      }
 
     /**
@@ -112,17 +132,12 @@ class SiteController extends Controller
      public function actionDetailProduk($id) {
        $kategori      = [];
        $modelApi      = new Api();
-       $modelProduk   = new ProdukForm();
        $dataProduk    = $modelApi->get_tabel_by('produk', ['=', 'produk_id', $id]);
-       $modelKategori = new KategoriForm();
-       $dataKategori  = $modelApi->get_tabel_all('kategori');
-       foreach ($dataKategori as $key => $value) {
-         $kategori[$value['kategori_id']] = $value['nama_kategori'];
-       }
+       $dataKategori  = $modelApi->get_tabel_by('kategori', ['=', 'kategori_id', $dataProduk['kategori_id']]);
+       $dataProduk['is_active'] = ($dataProduk['is_delete']) ? '<span class="btn btn-info btn-sm">Aktif</span>' : '<span class="btn btn-sm btn-danger">Delete</span>';
+       $dataProduk['posting']   = date('d M Y H:i:s', $dataProduk['updated_at']);
        return $this->renderAjax('produk/detailProduk', [
-           'modelProduk'   => $modelProduk,
-           'modelKategori' => $modelKategori,
-           'kategori'      => $kategori,
+           'kategori'      => $dataKategori,
            'produk'        => $dataProduk,
        ]);
      }
@@ -147,6 +162,21 @@ class SiteController extends Controller
            'modelKategori' => $modelKategori,
            'kategori'      => $kategori,
            'produk'        => $dataProduk,
+       ]);
+     }
+
+    /**
+     * Displays produk.
+     *
+     * @return string
+     */
+     public function actionUbahDataKategori($id) {
+       $modelApi      = new Api();
+       $modelKategori = new KategoriForm();
+       $dataKategori  = $modelApi->get_tabel_by('kategori', ['=', 'kategori_id', $id]);
+       return $this->renderAjax('kategori/ubahDataKategori', [
+           'model'    => $modelKategori,
+           'kategori' => $dataKategori,
        ]);
      }
 
