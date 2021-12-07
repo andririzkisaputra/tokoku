@@ -3,6 +3,9 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use common\models\ProdukForm;
+use common\models\KategoriForm;
+use common\models\Api;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -29,6 +32,11 @@ class SiteController extends Controller
                     ],
                     [
                         'actions' => ['logout', 'index'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                    [
+                        // 'actions' => ['produk', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -66,6 +74,67 @@ class SiteController extends Controller
     }
 
     /**
+     * Displays produk.
+     *
+     * @return string
+     */
+    public function actionProduk()
+    {
+        return $this->render('produk/index');
+    }
+
+    /**
+     * Displays produk.
+     *
+     * @return string
+     */
+     public function actionTambahDataProduk() {
+       $kategori      = [];
+       $modelApi      = new Api();
+       $modelProduk   = new ProdukForm();
+       $modelKategori = new KategoriForm();
+       $dataKategori  = $modelApi->get_tabel_by('kategori');
+       foreach ($dataKategori as $key => $value) {
+         $kategori[$value['kategori_id']] = $value['nama_kategori'];
+       }
+       return $this->renderAjax('produk/tambahDataProduk', [
+           'modelProduk'   => $modelProduk,
+           'modelKategori' => $modelKategori,
+           'kategori'      => $kategori,
+       ]);
+     }
+
+    /**
+     * Displays pesanan.
+     *
+     * @return string
+     */
+    public function actionPesanan()
+    {
+        return $this->render('pesanan/index');
+    }
+
+    /**
+     * Displays laporan.
+     *
+     * @return string
+     */
+    public function actionLaporan()
+    {
+        return $this->render('laporan/index');
+    }
+
+    /**
+     * Displays kategori.
+     *
+     * @return string
+     */
+    public function actionKategori()
+    {
+        return $this->render('kategori/index');
+    }
+
+    /**
      * Login action.
      *
      * @return string|Response
@@ -88,6 +157,20 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+    }
+
+    /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionRegistrasi()
+    {
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $post = Yii::$app->request->post();
+        $modelApi = new Api();
+        $simpan   = $modelApi->registrasi($post);
+        return $simpan;
     }
 
     /**

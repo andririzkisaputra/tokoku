@@ -88,3 +88,7 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+.tambah-data {
+  margin:10px 0px 15px 0px
+}
